@@ -1,0 +1,40 @@
+--- origsrc/texlive-20080816-source/libs/icu-xetex/icu-xetex.ac	2008-03-04 07:26:36.000000000 -0600
++++ src/texlive-20080816-source/libs/icu-xetex/icu-xetex.ac	2009-08-03 14:56:18.284905100 -0500
+@@ -42,8 +42,8 @@ else
+ 
+   if test x"$with_system_icu" != xyes; then
+     ICUCPPFLAGS='-I$(ICUDIR)/common -I$(ICUSRCDIR)/common -I$(ICUSRCDIR)/layout'
+-    LDICU='$(ICUDIR)/lib/libsicuuc.a $(ICUDIR)/lib/libsicule.a $(ICUDIR)/lib/libsicudata.a'
+-    ICUDEP='$(ICUDIR)/lib/libsicuuc.a $(ICUDIR)/lib/libsicule.a $(ICUDIR)/lib/libsicudata.a'
++    LDICU='$(ICUDIR)/lib/libsicuuc.a $(ICUDIR)/lib/libsicule.a $(ICUDIR)/lib/libsicudt.a'
++    ICUDEP='$(ICUDIR)/lib/libsicuuc.a $(ICUDIR)/lib/libsicule.a $(ICUDIR)/lib/libsicudt.a'
+     using_system_icu=no
+   else
+     ICUCPPFLAGS="$EXTRA_ICU_INCLUDE"
+--- origsrc/texlive-20080816-source/libs/luafontforge/Makefile	2008-04-28 03:45:24.000000000 -0500
++++ src/texlive-20080816-source/libs/luafontforge/Makefile	2009-08-03 20:07:00.746353900 -0500
+@@ -9,10 +9,9 @@ _CFLAGS=-DFONTFORGE_CONFIG_NO_WINDOWING_
+ 
+ .PHONY: newfile
+ 
+-fontforge: $(FF_LIB) newfile
+-	rm -f libff.a
+-	cd fontforge && $(MAKE)
+-	cd Unicode && $(MAKE)
++libff.a: $(FF_LIB) newfile
++#	cd fontforge && $(MAKE)
++#	cd Unicode && $(MAKE)
+ 	sh -c "ar cru libff.a fontforge/*.o Unicode/*.o $(FF_LIB)"
+ 	ranlib libff.a
+ 
+--- origsrc/texlive-20080816-source/libs/teckit/configure.ac	2008-04-03 06:50:21.000000000 -0500
++++ src/texlive-20080816-source/libs/teckit/configure.ac	2009-08-03 12:39:16.316268100 -0500
+@@ -15,7 +15,7 @@ AC_PROG_INSTALL
+ AC_PROG_LIBTOOL
+ 
+ if test "${target_os}" = "mingw32"; then
+-AC_PROG_RC
++LT_AC_PROG_RC
+ fi
+ 
+ AC_ARG_WITH(old-lib-names,

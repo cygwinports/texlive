@@ -1,0 +1,44 @@
+DESCRIPTION="TeX publishing system"
+HOMEPAGE="http://www.tug.org/texlive/"
+SRC_URI="mirror://ctan/systems/texlive/Source/${P}-source.tar.lzma"
+SRC_DIR="${P}-source"
+
+DIFF_EXCLUDES="Makefile.in c-auto.in"
+
+src_compile() {
+	cd ${S}
+	rm -f texk/libtool.m4
+	touch texk/libtool.m4
+#	for m in libtool.m4 lt{options,sugar,version,~obsolete}.m4
+#	do
+#		cat /usr/share/aclocal/${m} >> texk/libtool.m4
+#	done
+
+	# these use libtool
+	for d in libs/teckit
+	do
+		pushd ${d}
+		cygautoreconf
+		popd
+	done
+
+	pushd texk
+	ACLOCAL_FLAGS="-I ${S}/texk/m4"
+	cygautoreconf
+	popd
+
+	cd ${B}
+	cygconf \
+		--enable-shared \
+		"--with-tex-banner=TeX Live 2008/Cygwin" \
+		--with-system-ncurses \
+		--with-system-zlib \
+		--with-system-pnglib \
+		--with-system-t1lib \
+		--with-system-freetype2 --with-freetype2-include=/usr/include \
+		--with-system-gd \
+		--with-graphite \
+		--without-xindy
+
+	cygmake world ZZIPLIBDEP=/usr/lib/libzzip.a  ZZIPLIBSRCDIR=/dev/null
+}
