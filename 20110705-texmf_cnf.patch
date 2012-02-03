@@ -1,0 +1,54 @@
+Keep in sync with identical patch in texlive-collection-basic
+
+--- origsrc/texlive-20110705-source/texk/kpathsea/texmf.cnf	2011-06-18 17:10:46.000000000 -0500
++++ src/texlive-20110705-source/texk/kpathsea/texmf.cnf	2012-01-19 17:10:53.868928000 -0600
+@@ -49,7 +49,7 @@
+ % (http://tug.org/tds), or files may not be found.
+ %
+ % Redistributors will probably want $SELFAUTODIR/share, i.e., /usr/share.
+-TEXMFROOT = $SELFAUTOPARENT
++TEXMFROOT = $SELFAUTODIR/share
+ 
+ % The tree containing runtime files related to the specific
+ % distribution and version.
+@@ -59,25 +59,25 @@ TEXMFMAIN = $TEXMFROOT/texmf
+ TEXMFDIST = $TEXMFROOT/texmf-dist
+ 
+ % Local additions to the distribution trees.
+-TEXMFLOCAL = $TEXMFROOT/../texmf-local
++TEXMFLOCAL = $TEXMFROOT/texmf-site
+ 
+ % TEXMFSYSVAR, where *-sys store cached runtime data.
+-TEXMFSYSVAR = $TEXMFROOT/texmf-var
++TEXMFSYSVAR = /var/lib/texmf
+ 
+ % TEXMFSYSCONFIG, where *-sys store configuration data.
+-TEXMFSYSCONFIG = $TEXMFROOT/texmf-config
++TEXMFSYSCONFIG = /etc/texmf
+ 
+ % Per-user texmf tree(s) -- organized per the TDS, as usual.  To define
+ % more than one per-user tree, set this to a list of directories in
+ % braces, as described above.  (This used to be HOMETEXMF.)  ~ expands
+ % to %USERPROFILE% on Windows, $HOME otherwise.
+-TEXMFHOME = ~/texmf
++TEXMFHOME = ~/.local/share/texmf
+ 
+ % TEXMFVAR, where texconfig/updmap/fmtutil store cached runtime data.
+-TEXMFVAR = ~/.texlive2011/texmf-var
++TEXMFVAR = ~/.cache/texmf
+ 
+ % TEXMFCONFIG, where texconfig/updmap/fmtutil store configuration data.
+-TEXMFCONFIG = ~/.texlive2011/texmf-config
++TEXMFCONFIG = ~/.config/texmf
+ 
+ % List all the texmf trees.
+ %
+@@ -442,7 +442,7 @@ RUBYINPUTS   = .;$TEXMF/scripts/{$progna
+ % 
+ % For security reasons, it is better not to include . in this path.
+ %
+-TEXMFCNF = {$SELFAUTOLOC,$SELFAUTODIR,$SELFAUTOPARENT}{,{/share,}/texmf{-local,}/web2c}
++TEXMFCNF = //{$SELFAUTOLOC,$SELFAUTODIR,$SELFAUTOPARENT}{,{/share,}/texmf{-local,}/web2c}
+ 
+ % kpathsea 3.5.3 and later sets these at runtime. To avoid empty
+ % expansions from binaries linked against an earlier version of the

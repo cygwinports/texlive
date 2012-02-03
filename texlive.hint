@@ -1,0 +1,7 @@
+category: Publishing
+requires: libfontconfig1 libfreetype6 libgcc1 libgd2 libgs9 libiconv2 libicu48 libkpathsea6 libpaper1 libpng14 libpoppler19 libptexenc1 libssp0 libstdc++6 libX11_6 libXaw7 libXmu6 libXpm4 libXt6 libzzip0.13 t1lib5 zlib0 texlive-collection-basic
+sdesc: "TeX Live binaries"
+ldesc: "TeX Live provides a comprehensive, cross-platform TeX system. It 
+includes all the major TeX-related programs, macro packages, and fonts 
+that are free software, including support for many languages around the 
+world."

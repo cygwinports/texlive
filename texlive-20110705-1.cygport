@@ -1,0 +1,59 @@
+DESCRIPTION="TeX publishing system"
+HOMEPAGE="http://www.tug.org/texlive/"
+SRC_URI="mirror://ctan/systems/texlive/Source/${P}-source.tar.xz"
+SRC_DIR="${P}-source"
+
+PATCH_URI="
+	mirror://portage/dev-tex/luatex/files/poppler018.patch
+	20110705-no-undefined.patch
+	20110705-texmf_cnf.patch
+"
+
+PKG_NAMES="${PN} libkpathsea6 libkpathsea-devel libptexenc1 libptexenc-devel"
+texlive_CONTENTS="usr/bin/*.exe usr/bin/xindy.mem usr/share/"
+libkpathsea6_CONTENTS="usr/bin/cygkpathsea-6.dll"
+libkpathsea_devel_CONTENTS="usr/include/kpathsea/ usr/lib/libkpathsea.*"
+libptexenc1_CONTENTS="usr/bin/cygptexenc-1.dll"
+libptexenc_devel_CONTENTS="usr/include/ptexenc/ usr/lib/libptexenc.*"
+
+DIFF_EXCLUDES="Makefile.in configure build-aux m4"
+
+src_compile() {
+	cd ${S}
+	libtoolize --force --install
+	./reautoconf
+
+	# asymptote: does not build in tree, upstream is newer
+	# dialog: use standalone dialog (tcdialog has been removed from trunk)
+	cd ${B}
+	cygconf \
+		--enable-shared \
+		--disable-native-texlive-build \
+		--disable-dialog \
+		--enable-xindy \
+		--with-banner-add=/Cygwin \
+		--with-system-freetype2 --with-freetype2-include=/usr/include \
+		--with-system-gd \
+		--with-system-icu \
+		--with-system-libgs \
+		--with-system-libpng \
+		--with-system-ncurses \
+		--with-system-poppler \
+		--with-system-t1lib \
+		--with-system-xpdf \
+		--with-system-zlib \
+		--with-system-zziplib
+
+	cygmake all
+}
+
+src_install() {
+	cd ${B}
+	cyginstall
+
+	# all we want is the binaries, everything else will come from other pkgs
+	rm -fr ${D}/usr/texmf*
+	find ${D}/usr/bin/ -mindepth 1 ! -name '*.exe' ! -name '*.dll' ! -name '*.mem' -delete
+}
+
+KEEP_LA_FILES="none"
